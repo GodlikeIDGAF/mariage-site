@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Valentina &amp; Maxence — 22 mai 2027</title>
+
+<!--
+  ============================================================
+  COMMENT MODIFIER CE SITE (sans coder)
+  ============================================================
+  Tout le texte visible est dans le <body>, plus bas.
+  Cherchez les commentaires du type <!-- MODIFIER : ... --> :
+  ils indiquent exactement quoi changer et où.
+
+  Les couleurs et polices sont centralisées dans le bloc
+  ":root" ci-dessous (section CSS) — changez une valeur ici,
+  elle s'applique partout d'un coup.
+  ============================================================
+-->
+
+<style>
+  :root {
+    /* MODIFIER : palette de couleurs */
+    --stone: #ece8e0;       /* fond général, pierre claire */
+    --stone-dark: #d8d2c4;  /* fond sections alternées */
+    --ink: #2c2a24;         /* texte principal */
+    --forest: #3f4a3a;      /* vert sauge foncé, accent */
+    --gold: #a8895a;        /* accent doré discret */
+    --line: #c7bfae;        /* traits fins */
+
+    --serif: 'EB Garamond', Georgia, serif;
+    --sans: 'Work Sans', -apple-system, sans-serif;
+  }
+
+  @import url('https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;1,400&family=Work+Sans:wght@300;400;500&display=swap');
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    background: var(--stone);
+    color: var(--ink);
+    font-family: var(--sans);
+    font-weight: 300;
+    line-height: 1.6;
+  }
+
+  .wrap {
+    max-width: 640px;
+    margin: 0 auto;
+    padding: 0 24px;
+  }
+
+  /* HERO */
+  header.hero {
+    padding: 96px 24px 72px;
+    text-align: center;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .hero .ampersand {
+    display: block;
+    font-family: var(--serif);
+    font-style: italic;
+    font-size: 28px;
+    color: var(--gold);
+    margin: 6px 0;
+  }
+
+  h1.names {
+    font-family: var(--serif);
+    font-weight: 400;
+    font-size: clamp(40px, 8vw, 64px);
+    margin: 0;
+    letter-spacing: 0.5px;
+  }
+
+  .hero .date {
+    margin-top: 20px;
+    font-size: 15px;
+    letter-spacing: 2px;
+    color: var(--forest);
+  }
+
+  .hero .venue {
+    margin-top: 4px;
+    font-size: 15px;
+    color: var(--ink);
+    opacity: 0.75;
+  }
+
+  /* SECTIONS */
+  section {
+    padding: 64px 0;
+    border-bottom: 1px solid var(--line);
+  }
+
+  section:nth-of-type(even) {
+    background: var(--stone-dark);
+  }
+
+  section:nth-of-type(even) .wrap {
+    padding-top: 0;
+  }
+
+  h2 {
+    font-family: var(--serif);
+    font-weight: 400;
+    font-size: 30px;
+    margin: 0 0 28px;
+    color: var(--forest);
+  }
+
+  p { margin: 0 0 16px; }
+
+  address {
+    font-style: normal;
+  }
+
+  .map-link {
+    display: inline-block;
+    margin-top: 8px;
+    color: var(--forest);
+    text-decoration: underline;
+    text-decoration-color: var(--gold);
+    text-underline-offset: 4px;
+  }
+
+  /* PROGRAMME — liste horaire */
+  .timeline {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    border-left: 1px solid var(--line);
+  }
+
+  .timeline li {
+    position: relative;
+    padding: 0 0 28px 28px;
+  }
+
+  .timeline li::before {
+    content: '';
+    position: absolute;
+    left: -5px;
+    top: 6px;
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    background: var(--gold);
+  }
+
+  .timeline li:last-child { padding-bottom: 0; }
+
+  .timeline .time {
+    font-family: var(--serif);
+    font-size: 19px;
+    color: var(--forest);
+    display: block;
+  }
+
+  .timeline .desc {
+    font-size: 15px;
+    opacity: 0.85;
+  }
+
+  .note {
+    margin-top: 32px;
+    font-size: 13px;
+    font-style: italic;
+    opacity: 0.65;
+  }
+
+  /* BOUTON PHOTOS */
+  .btn {
+    display: inline-block;
+    padding: 14px 32px;
+    background: var(--forest);
+    color: var(--stone);
+    text-decoration: none;
+    font-size: 14px;
+    letter-spacing: 1px;
+  }
+
+  .btn:hover { background: var(--ink); }
+
+  footer {
+    padding: 40px 24px;
+    text-align: center;
+    font-size: 13px;
+    opacity: 0.6;
+  }
+</style>
+</head>
+<body>
+
+  <!-- ================= HERO ================= -->
+  <header class="hero">
+    <!-- MODIFIER : prénoms -->
+    <h1 class="names">Valentina</h1>
+    <span class="ampersand">&amp;</span>
+    <h1 class="names">Maxence</h1>
+
+    <!-- MODIFIER : date -->
+    <p class="date">22 MAI 2027</p>
+    <!-- MODIFIER : lieu -->
+    <p class="venue">Prieuré de Vivion</p>
+  </header>
+
+  <!-- ================= LIEU ================= -->
+  <section id="lieu">
+    <div class="wrap">
+      <h2>Le lieu</h2>
+      <p>
+        La cérémonie et la réception se dérouleront au
+        <strong>Prieuré de Vivion</strong>.
+      </p>
+      <!--
+        MODIFIER : adresse complète et lien Google Maps
+        Remplacez l'adresse ci-dessous, et le href du lien
+        par l'URL Google Maps du lieu (clic droit sur le
+        lieu dans Google Maps > "Partager" > copier le lien).
+      -->
+      <address>Adresse à compléter, Prieuré de Vivion</address>
+      <a class="map-link" href="#" target="_blank" rel="noopener">Voir sur Google Maps →</a>
+    </div>
+  </section>
+
+  <!-- ================= PROGRAMME ================= -->
+  <section id="programme">
+    <div class="wrap">
+      <h2>Programme de la journée</h2>
+      <!--
+        MODIFIER : horaires. Chaque <li> est un moment.
+        Le programme est indiqué comme prévisionnel — retirez
+        la classe "note" en bas quand les horaires seront fixés.
+      -->
+      <ul class="timeline">
+        <li>
+          <span class="time">14h00</span>
+          <span class="desc">Accueil des invités logeant sur place</span>
+        </li>
+        <li>
+          <span class="time">14h30</span>
+          <span class="desc">Début de la cérémonie religieuse</span>
+        </li>
+        <li>
+          <span class="time">15h30 – 16h00</span>
+          <span class="desc">Photos</span>
+        </li>
+        <li>
+          <span class="time">17h00</span>
+          <span class="desc">Début du cocktail (environ 2 à 3 heures)</span>
+        </li>
+        <li>
+          <span class="time">Soirée</span>
+          <span class="desc">Dîner assis</span>
+        </li>
+      </ul>
+      <p class="note">Programme donné à titre indicatif et pouvant encore évoluer.</p>
+    </div>
+  </section>
+
+  <!-- ================= PHOTOS ================= -->
+  <section id="photos">
+    <div class="wrap">
+      <h2>Les photos</h2>
+      <p>Retrouvez ici l'album partagé pour déposer et consulter les photos du mariage.</p>
+      <!-- MODIFIER : lien vers l'album photo (Google Photos, etc.) une fois créé -->
+      <a class="btn" href="#" target="_blank" rel="noopener">Accéder à l'album photo</a>
+    </div>
+  </section>
+
+  <footer>
+    <!-- MODIFIER : texte de pied de page si besoin -->
+    Valentina &amp; Maxence — 22 mai 2027
+  </footer>
+
+</body>
+</html>
