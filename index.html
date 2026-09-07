@@ -17,6 +17,9 @@
   en pointillés et un nom de fichier attendu (ex: lieu-1.jpg
   dans le dossier images). Uploadez votre photo avec exactement
   ce nom dans le dossier images du dépôt, rien d'autre à changer.
+  La photo de fond de l'en-tête suit la même logique avec le
+  nom images/hero.jpg ; tant qu'elle n'existe pas, un fond vert
+  uni s'affiche à la place et le texte reste lisible.
 
   Les couleurs et polices sont centralisées dans le bloc
   racine de la section CSS : changez une valeur ici, elle
@@ -100,21 +103,35 @@
   nav.topnav {
     position: sticky;
     top: 0;
-    z-index: 10;
-    background: rgba(236, 232, 224, 0.92);
-    backdrop-filter: blur(6px);
+    z-index: 20;
+    background: var(--stone);
     border-bottom: 1px solid var(--line);
   }
 
   nav.topnav .nav-inner {
-    max-width: 640px;
+    max-width: 900px;
     margin: 0 auto;
-    padding: 16px 24px;
+    padding: 14px 24px;
     display: flex;
-    justify-content: center;
+    justify-content: space-between;
+    align-items: center;
     flex-wrap: wrap;
-    gap: 20px;
+    gap: 12px;
   }
+
+  .nav-logo {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-family: var(--serif);
+    font-style: italic;
+    font-size: 19px;
+    color: var(--ink);
+  }
+
+  .nav-logo img { width: 24px; height: 24px; mix-blend-mode: multiply; }
+
+  .nav-links { display: flex; flex-wrap: wrap; gap: 20px; }
 
   nav.topnav a {
     color: var(--forest);
@@ -127,56 +144,92 @@
 
   nav.topnav a:hover { opacity: 1; text-decoration: underline; text-decoration-color: var(--gold); }
 
-  /* ============= HERO ============= */
+  /* ============= HERO PHOTO ============= */
   header.hero {
-    padding: 72px 24px 56px;
-    text-align: center;
-    border-bottom: 1px solid var(--line);
     position: relative;
-    background: radial-gradient(ellipse at 50% 0%, var(--stone-dark) 0%, var(--stone) 65%);
+    min-height: 88vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    overflow: hidden;
+    background: var(--forest);
   }
 
-  .swan {
-    width: 130px;
-    height: auto;
-    margin: 0 auto 16px;
-    display: block;
-    mix-blend-mode: multiply;
+  .hero-bg {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
   }
 
-  .hero .ampersand {
-    display: block;
-    font-family: var(--serif);
-    font-style: italic;
-    font-size: 26px;
-    color: var(--gold);
-    margin: 4px 0;
+  .hero-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, rgba(44,42,36,0.15) 0%, rgba(44,42,36,0.55) 100%);
   }
+
+  .hero-content {
+    position: relative;
+    z-index: 2;
+    padding: 48px 24px;
+    color: #fff;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .hero-content .countdown .num,
+  .hero-content .countdown .label { color: #fff; }
+  .hero-content .countdown .label { opacity: 0.75; }
 
   h1.names {
     font-family: var(--serif);
     font-weight: 400;
-    font-size: clamp(36px, 8vw, 60px);
-    margin: 0;
+    font-size: clamp(40px, 8vw, 66px);
+    margin: 20px 0 0;
+    line-height: 1.15;
     letter-spacing: 0.5px;
   }
 
-  .hero .date { margin-top: 18px; font-size: 15px; letter-spacing: 2px; color: var(--forest); }
-  .hero .venue { margin-top: 4px; font-size: 15px; opacity: 0.75; }
+  .hero-content .ampersand {
+    font-family: var(--serif);
+    font-style: italic;
+    color: var(--gold);
+  }
+
+  .info-pill {
+    margin-top: 32px;
+    display: inline-flex;
+    align-items: center;
+    gap: 20px;
+    background: rgba(255,255,255,0.92);
+    backdrop-filter: blur(4px);
+    color: var(--ink);
+    padding: 14px 30px;
+    border-radius: 999px;
+    box-shadow: 0 12px 30px -10px rgba(0,0,0,0.35);
+    font-size: 14px;
+    letter-spacing: 0.5px;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .info-pill .sep { width: 1px; height: 26px; background: var(--line); }
 
   /* ============= COUNTDOWN ============= */
   .countdown {
     display: flex;
     justify-content: center;
     gap: 28px;
-    margin-top: 36px;
   }
 
   .countdown .cell { text-align: center; }
 
   .countdown .num {
     font-family: var(--serif);
-    font-size: 34px;
+    font-size: 32px;
     color: var(--forest);
     display: block;
     line-height: 1;
@@ -187,6 +240,12 @@
     letter-spacing: 1.5px;
     text-transform: uppercase;
     opacity: 0.6;
+  }
+
+  @media (max-width: 600px) {
+    header.hero { min-height: 100vh; }
+    .info-pill { flex-direction: column; gap: 8px; padding: 18px 26px; }
+    .info-pill .sep { width: 40px; height: 1px; }
   }
 
   /* ============= SECTIONS ============= */
@@ -387,38 +446,48 @@
   <!-- MODIFIER : ajoutez/retirez des liens si vous ajoutez/retirez des sections -->
   <nav class="topnav">
     <div class="nav-inner">
-      <a href="#histoire">Notre histoire</a>
-      <a href="#lieu">Le lieu</a>
-      <a href="#programme">Programme</a>
-      <a href="#theme">Thème</a>
-      <a href="#cadeau">Cadeau</a>
-      <a href="#dormir">Où dormir</a>
-      <a href="#photos">Photos</a>
+      <div class="nav-logo">
+        <img src="images/cygne.jpg" alt="">
+        V&amp;M
+      </div>
+      <div class="nav-links">
+        <a href="#histoire">Notre histoire</a>
+        <a href="#lieu">Le lieu</a>
+        <a href="#dormir">Où dormir</a>
+        <a href="#programme">Programme</a>
+        <a href="#theme">Thème</a>
+        <a href="#cadeau">Cadeau</a>
+        <a href="#photos">Photos</a>
+      </div>
     </div>
   </nav>
 
-  <!-- ================= HERO ================= -->
+  <!-- ================= HERO PHOTO ================= -->
   <header class="hero">
-    <!-- MODIFIER : image du cygne — remplacez images/cygne.jpg si besoin -->
-    <img class="swan" src="images/cygne.jpg" alt="Cygne">
+    <!-- MODIFIER : photo de fond — déposez une photo dans images/hero.jpg.
+         Sans photo, un fond vert uni s'affiche à la place, le texte reste lisible. -->
+    <img class="hero-bg" src="images/hero.jpg" alt="" onerror="this.style.display='none'">
+    <div class="hero-overlay"></div>
 
-    <!-- MODIFIER : prénoms -->
-    <h1 class="names">Valentina</h1>
-    <span class="ampersand">&amp;</span>
-    <h1 class="names">Maxence</h1>
+    <div class="hero-content">
+      <!-- ================= COMPTE À REBOURS ================= -->
+      <!-- MODIFIER : la date cible est dans le <script> tout en bas de page -->
+      <div class="countdown" id="countdown">
+        <div class="cell"><span class="num" id="cd-days">--</span><span class="label">Jours</span></div>
+        <div class="cell"><span class="num" id="cd-hours">--</span><span class="label">Heures</span></div>
+        <div class="cell"><span class="num" id="cd-min">--</span><span class="label">Min</span></div>
+        <div class="cell"><span class="num" id="cd-sec">--</span><span class="label">Sec</span></div>
+      </div>
 
-    <!-- MODIFIER : date -->
-    <p class="date">22 MAI 2027</p>
-    <!-- MODIFIER : lieu (orthographe correcte : Vivoin, Sarthe — pas "Vivion") -->
-    <p class="venue">Prieuré de Vivoin</p>
+      <!-- MODIFIER : prénoms -->
+      <h1 class="names">Valentina <span class="ampersand">&amp;</span> Maxence</h1>
 
-    <!-- ================= COMPTE À REBOURS ================= -->
-    <!-- MODIFIER : la date cible est dans le <script> tout en bas de page -->
-    <div class="countdown" id="countdown">
-      <div class="cell"><span class="num" id="cd-days">--</span><span class="label">Jours</span></div>
-      <div class="cell"><span class="num" id="cd-hours">--</span><span class="label">Heures</span></div>
-      <div class="cell"><span class="num" id="cd-min">--</span><span class="label">Min</span></div>
-      <div class="cell"><span class="num" id="cd-sec">--</span><span class="label">Sec</span></div>
+      <!-- MODIFIER : date et lieu (orthographe correcte : Vivoin, Sarthe — pas "Vivion") -->
+      <div class="info-pill">
+        <span>22 MAI 2027</span>
+        <span class="sep"></span>
+        <span>Prieuré de Vivoin</span>
+      </div>
     </div>
   </header>
 
@@ -468,6 +537,33 @@
         <div class="photo-box" id="ph-lieu-2">
           <img src="images/lieu-2.jpg" alt="Photo du Prieuré de Vivoin" onload="this.parentElement.classList.add('has-photo')" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
           <span>images/lieu-2.jpg</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= OÙ DORMIR ================= -->
+  <section class="reveal" id="dormir">
+    <div class="wrap">
+      <h2>Où dormir</h2>
+      <!-- MODIFIER : texte définitif sur l'hébergement -->
+      <p>
+        Le Prieuré propose 33 couchages sur place, réservés en
+        priorité aux invités qui souhaitent y passer la nuit.
+        Pour les places restantes, nous réservons également des
+        chambres dans des hébergements à proximité afin de
+        faciliter la nuit de tous ceux qui le souhaitent.
+      </p>
+      <p class="note">Liste des hébergements à proximité et modalités de réservation à venir.</p>
+
+      <div class="photo-grid">
+        <div class="photo-box" id="ph-dormir-1">
+          <img src="images/dormir-1.jpg" alt="Photo de l'hébergement" onload="this.parentElement.classList.add('has-photo')" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+          <span>images/dormir-1.jpg</span>
+        </div>
+        <div class="photo-box" id="ph-dormir-2">
+          <img src="images/dormir-2.jpg" alt="Photo de l'hébergement" onload="this.parentElement.classList.add('has-photo')" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+          <span>images/dormir-2.jpg</span>
         </div>
       </div>
     </div>
@@ -538,33 +634,6 @@
         <div class="photo-box" id="ph-voyage-2">
           <img src="images/voyage-2.jpg" alt="Photo de voyage" onload="this.parentElement.classList.add('has-photo')" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
           <span>images/voyage-2.jpg</span>
-        </div>
-      </div>
-    </div>
-  </section>
-
-    <!-- ================= OÙ DORMIR ================= -->
-  <section class="reveal" id="dormir">
-    <div class="wrap">
-      <h2>Où dormir</h2>
-      <!-- MODIFIER : texte définitif sur l'hébergement -->
-      <p>
-        Le Prieuré propose 33 couchages sur place, réservés en
-        priorité aux invités qui souhaitent y passer la nuit.
-        Pour les places restantes, nous réservons également des
-        chambres dans des hébergements à proximité afin de
-        faciliter la nuit de tous ceux qui le souhaitent.
-      </p>
-      <p class="note">Liste des hébergements à proximité et modalités de réservation à venir.</p>
-
-      <div class="photo-grid">
-        <div class="photo-box" id="ph-dormir-1">
-          <img src="images/dormir-1.jpg" alt="Photo de l'hébergement" onload="this.parentElement.classList.add('has-photo')" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
-          <span>images/dormir-1.jpg</span>
-        </div>
-        <div class="photo-box" id="ph-dormir-2">
-          <img src="images/dormir-2.jpg" alt="Photo de l'hébergement" onload="this.parentElement.classList.add('has-photo')" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
-          <span>images/dormir-2.jpg</span>
         </div>
       </div>
     </div>
