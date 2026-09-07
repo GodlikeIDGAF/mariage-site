@@ -9,25 +9,21 @@
   ============================================================
   COMMENT MODIFIER CE SITE (sans coder)
   ============================================================
-  Tout le texte visible est dans le <body>, plus bas.
-  Cherchez les commentaires <!-- MODIFIER : ils
-  indiquent exactement quoi changer et où.
+  Tout le texte visible est dans le corps de la page, plus bas.
+  Cherchez le mot MODIFIER dans les commentaires du code : il
+  indique exactement quoi changer et où.
 
-  PHOTOS : ce fichier ne contient aucune vraie photo pour le
-  moment (ni du lieu, ni de vous, ni de voyage). Chaque endroit
-  prévu pour une photo est une case avec un cadre en pointillés
-  et un nom de fichier attendu (ex: images/lieu-1.jpg).
-  Pour ajouter une vraie photo :
-    1. Créez un dossier "images" dans le dépôt GitHub
-    2. Uploadez-y votre photo avec exactement le nom indiqué
-    3. La case affichera automatiquement la photo (rien d'autre
-       à changer dans le code)
+  PHOTOS : chaque emplacement photo est une case avec un cadre
+  en pointillés et un nom de fichier attendu (ex: lieu-1.jpg
+  dans le dossier images). Uploadez votre photo avec exactement
+  ce nom dans le dossier images du dépôt, rien d'autre à changer.
 
   Les couleurs et polices sont centralisées dans le bloc
-  ":root" (section CSS) — changez une valeur ici, elle
+  racine de la section CSS : changez une valeur ici, elle
   s'applique partout d'un coup.
   ============================================================
 -->
+
 
 <style>
   :root {
@@ -103,38 +99,11 @@
   }
 
   .swan {
-    width: 100px;
+    width: 130px;
     height: auto;
     margin: 0 auto 16px;
     display: block;
-    color: var(--forest);
-    opacity: 0.9;
-  }
-
-  .date-swans {
-    display: inline-flex;
-    gap: 3px;
-    vertical-align: middle;
-    margin-right: 9px;
-    transform: translateY(-1px);
-  }
-
-  .swan-mini {
-    width: 20px;
-    height: 20px;
-    color: var(--forest);
-  }
-
-  .swan-mini.flip { transform: scaleX(-1); }
-
-  .sr-only {
-    position: absolute;
-    width: 1px; height: 1px;
-    padding: 0; margin: -1px;
-    overflow: hidden;
-    clip: rect(0,0,0,0);
-    white-space: nowrap;
-    border: 0;
+    mix-blend-mode: multiply;
   }
 
   .hero .ampersand {
@@ -293,23 +262,6 @@
         <path d="M 49 9.5 L 60 8 L 50 14.5 Z" fill="currentColor"/>
         <circle cx="47.3" cy="9.8" r="1" fill="white"/>
       </symbol>
-      <!-- Cygne détaillé, style dessin au trait, pour l'en-tête -->
-      <symbol id="swan-outline" viewBox="0 0 100 100">
-        <g fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
-          <ellipse cx="36" cy="74" rx="28" ry="15"/>
-          <path d="M 52 70 C 58 58, 42 50, 42 36 C 42 26, 52 22, 50 15"/>
-          <path d="M 43 69 C 49 60, 33 52, 36 38 C 36 29, 44 25, 42.5 16.5"/>
-          <circle cx="47" cy="13" r="4.2"/>
-          <path d="M 50.5 11 L 61 9 L 51.5 16"/>
-        </g>
-        <circle cx="48" cy="12" r="0.9" fill="currentColor"/>
-        <g fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round">
-          <path d="M 16 66 C 26 70, 38 71, 48 66"/>
-          <path d="M 14 74 C 26 79, 42 80, 54 74"/>
-          <path d="M 16 82 C 26 86, 40 87, 50 82"/>
-        </g>
-        <path d="M 2 92 L 98 92" fill="none" stroke="currentColor" stroke-width="1.5"/>
-      </symbol>
     </defs>
   </svg>
 
@@ -327,17 +279,16 @@
 
   <!-- ================= HERO ================= -->
   <header class="hero">
-    <!-- Motif cygne, dessin original -->
-    <svg class="swan" viewBox="0 0 100 100" aria-hidden="true"><use href="#swan-outline"></use></svg>
+    <!-- MODIFIER : image du cygne — remplacez images/cygne.jpg si besoin -->
+    <img class="swan" src="images/cygne.jpg" alt="Cygne">
 
     <!-- MODIFIER : prénoms -->
     <h1 class="names">Valentina</h1>
     <span class="ampersand">&amp;</span>
     <h1 class="names">Maxence</h1>
 
-    <!-- MODIFIER : date. Les deux cygnes remplacent visuellement les chiffres "22" -->
-    <p class="date">22 MAI 2027
-    </p>
+    <!-- MODIFIER : date -->
+    <p class="date">22 MAI 2027</p>
     <!-- MODIFIER : lieu (orthographe correcte : Vivoin, Sarthe — pas "Vivion") -->
     <p class="venue">Prieuré de Vivoin</p>
 
@@ -357,10 +308,10 @@
       <h2>Notre histoire</h2>
       <!-- MODIFIER : remplacez ce texte par votre propre récit -->
       <p>
-        Nous nous sommes rencontrés à Montréal en août 2020 avec un magnifique premier "Brunch" sur la rue Peel. 
-        Malgré quelques délais pour notre deuxième rencontre, nous nous sommes revus en janvier 2021 et avons conclu que nous voulions aller plus loin.
-        5 années plus tard après une demande en mariage sur les hauteurs de Lyon, nous nous marions au Prieuré de Vivoin.
-        Nous avons vraiment hâte de vous accueillir pour cette magnifique journée avec nous.
+        Texte à écrire — quelques lignes sur votre rencontre, ce que
+        vous avez vécu ensemble, et ce qui vous a menés jusqu'ici.
+        Pas besoin d'un roman : deux ou trois paragraphes suffisent
+        largement pour vos invités.
       </p>
       <div class="photo-grid">
         <div class="photo-box" id="ph-histoire-1">
@@ -391,7 +342,7 @@
       <!-- MODIFIER : adresse complète -->
       <address>Prieuré de Vivoin, Vivoin, Sarthe — adresse exacte à compléter</address>
       <!-- MODIFIER : lien Google Maps (clic droit sur le lieu dans Maps > Partager > copier le lien) -->
-      <a class="map-link" href="https://maps.app.goo.gl/hqLFGjN3z4og3bh58" target="_blank" rel="noopener">Voir sur Google Maps →</a>
+      <a class="map-link" href="#" target="_blank" rel="noopener">Voir sur Google Maps →</a>
 
       <div class="photo-grid">
         <div class="photo-box" id="ph-lieu-1">
