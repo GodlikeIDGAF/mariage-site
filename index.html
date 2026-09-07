@@ -96,6 +96,7 @@
     text-align: center;
     border-bottom: 1px solid var(--line);
     position: relative;
+    background: radial-gradient(ellipse at 50% 0%, var(--stone-dark) 0%, var(--stone) 65%);
   }
 
   .swan {
@@ -151,18 +152,11 @@
     opacity: 0.6;
   }
 
-  /* ============= SWAN DIVIDER ============= */
-  .divider {
-    display: flex;
-    justify-content: center;
-    padding: 40px 0 0;
-  }
-
-  .divider svg { width: 34px; height: auto; color: var(--gold); opacity: 0.6; }
-
   /* ============= SECTIONS ============= */
   section { padding: 64px 0; border-bottom: 1px solid var(--line); }
   section:nth-of-type(even) { background: var(--stone-dark); }
+
+  body { counter-reset: section; }
 
   h2 {
     font-family: var(--serif);
@@ -170,6 +164,19 @@
     font-size: 30px;
     margin: 0 0 28px;
     color: var(--forest);
+  }
+
+  section h2 { counter-increment: section; }
+
+  section h2::before {
+    content: "0" counter(section);
+    display: block;
+    font-family: var(--sans);
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 4px;
+    color: var(--gold);
+    margin-bottom: 10px;
   }
 
   p { margin: 0 0 16px; }
@@ -184,12 +191,13 @@
     text-underline-offset: 4px;
   }
 
-  /* ============= PHOTO PLACEHOLDER ============= */
+  /* ============= PHOTOS ============= */
   .photo-grid {
     display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 12px;
-    margin: 24px 0;
+    grid-template-columns: 3fr 2fr;
+    gap: 14px;
+    margin: 28px 0;
+    align-items: start;
   }
 
   .photo-grid.single { grid-template-columns: 1fr; }
@@ -203,9 +211,45 @@
     justify-content: center;
     background: rgba(168, 137, 90, 0.06);
     overflow: hidden;
+    position: relative;
   }
 
-  .photo-box img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  /* Une fois une vraie photo chargée : cadre différent + teinte unifiée */
+  .photo-box.has-photo {
+    border: none;
+    background: none;
+    box-shadow: 0 10px 24px -8px rgba(44, 42, 36, 0.35);
+  }
+
+  .photo-grid .photo-box:first-child { aspect-ratio: 3 / 4; }
+  .photo-grid .photo-box:nth-child(2) { aspect-ratio: 1 / 1; margin-top: 30px; }
+
+  .photo-box.has-photo:nth-child(odd) { transform: rotate(-1deg); }
+  .photo-box.has-photo:nth-child(even) { transform: rotate(1deg); }
+
+  .photo-box img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    /* Teinte discrète pour que toutes les photos, même très différentes,
+       se fondent dans la même palette plutôt que de jurer les unes avec
+       les autres */
+    filter: saturate(0.82) sepia(0.14) contrast(1.03);
+  }
+
+  /* Voile de couleur superposé à chaque photo, mélangé avec le contenu :
+     c'est ce qui unifie visuellement des photos venant de sources
+     différentes dans l'ambiance du site */
+  .photo-box.has-photo::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(160deg, var(--forest) 0%, transparent 55%, var(--gold) 100%);
+    mix-blend-mode: soft-light;
+    opacity: 0.55;
+    pointer-events: none;
+  }
 
   .photo-box span {
     display: none;
@@ -215,6 +259,41 @@
     padding: 8px;
     font-family: monospace;
   }
+
+  /* ============= PALETTE / THÈME ============= */
+  .palette {
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+    margin: 24px 0 8px;
+  }
+
+  .swatch {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    border: 1px dashed var(--gold);
+    background: rgba(168, 137, 90, 0.06);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .swatch span {
+    font-size: 9px;
+    letter-spacing: 0.5px;
+    opacity: 0.5;
+    font-family: monospace;
+    text-align: center;
+  }
+
+  /* MODIFIER : une fois une couleur posée en "style", ce sélecteur
+     masque automatiquement le pointillé et le texte "à venir" */
+  .swatch[style*="background"] {
+    border-style: solid;
+    border-color: var(--line);
+  }
+  .swatch[style*="background"] span { display: none; }
 
   /* ============= TIMELINE ============= */
   .timeline { list-style: none; margin: 0; padding: 0; border-left: 1px solid var(--line); }
@@ -242,6 +321,14 @@
 
   footer { padding: 40px 24px; text-align: center; font-size: 13px; opacity: 0.6; }
 
+  /* ============= APPARITION AU DÉFILEMENT ============= */
+  .reveal {
+    opacity: 0;
+    transform: translateY(18px);
+    transition: opacity 0.9s ease, transform 0.9s ease;
+  }
+  .reveal.visible { opacity: 1; transform: none; }
+
   @media (max-width: 480px) {
     .countdown { gap: 16px; }
     .countdown .num { font-size: 26px; }
@@ -251,20 +338,6 @@
 </head>
 <body>
 
-  <!-- Dessin du cygne, défini une fois et réutilisé partout (en-tête, séparateurs, date) -->
-  <svg width="0" height="0" style="position:absolute" aria-hidden="true">
-    <defs>
-      <symbol id="swan-shape" viewBox="0 0 100 100">
-        <ellipse cx="34" cy="72" rx="26" ry="15" fill="currentColor"/>
-        <path d="M 48 68 C 54 58, 38 50, 38 36 C 38 26, 48 22, 46 12"
-              fill="none" stroke="currentColor" stroke-width="7.5" stroke-linecap="round"/>
-        <circle cx="46" cy="11" r="4.4" fill="currentColor"/>
-        <path d="M 49 9.5 L 60 8 L 50 14.5 Z" fill="currentColor"/>
-        <circle cx="47.3" cy="9.8" r="1" fill="white"/>
-      </symbol>
-    </defs>
-  </svg>
-
   <!-- ================= NAVIGATION ================= -->
   <!-- MODIFIER : ajoutez/retirez des liens si vous ajoutez/retirez des sections -->
   <nav class="topnav">
@@ -272,6 +345,7 @@
       <a href="#histoire">Notre histoire</a>
       <a href="#lieu">Le lieu</a>
       <a href="#programme">Programme</a>
+      <a href="#theme">Thème</a>
       <a href="#cadeau">Cadeau</a>
       <a href="#photos">Photos</a>
     </div>
@@ -303,7 +377,7 @@
   </header>
 
   <!-- ================= NOTRE HISTOIRE ================= -->
-  <section id="histoire">
+  <section class="reveal" id="histoire">
     <div class="wrap">
       <h2>Notre histoire</h2>
       <!-- MODIFIER : remplacez ce texte par votre propre récit -->
@@ -315,23 +389,19 @@
       </p>
       <div class="photo-grid">
         <div class="photo-box" id="ph-histoire-1">
-          <img src="images/histoire-1.jpg" alt="Photo de notre histoire" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+          <img src="images/histoire-1.jpg" alt="Photo de notre histoire" onload="this.parentElement.classList.add('has-photo')" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
           <span>images/histoire-1.jpg</span>
         </div>
         <div class="photo-box" id="ph-histoire-2">
-          <img src="images/histoire-2.jpg" alt="Photo de notre histoire" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+          <img src="images/histoire-2.jpg" alt="Photo de notre histoire" onload="this.parentElement.classList.add('has-photo')" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
           <span>images/histoire-2.jpg</span>
         </div>
       </div>
     </div>
   </section>
 
-  <div class="divider">
-    <svg viewBox="0 0 100 100" aria-hidden="true"><use href="#swan-shape"></use></svg>
-  </div>
-
   <!-- ================= LIEU ================= -->
-  <section id="lieu">
+  <section class="reveal" id="lieu">
     <div class="wrap">
       <h2>Le lieu</h2>
       <p>
@@ -346,11 +416,11 @@
 
       <div class="photo-grid">
         <div class="photo-box" id="ph-lieu-1">
-          <img src="images/lieu-1.jpg" alt="Photo du Prieuré de Vivoin" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+          <img src="images/lieu-1.jpg" alt="Photo du Prieuré de Vivoin" onload="this.parentElement.classList.add('has-photo')" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
           <span>images/lieu-1.jpg</span>
         </div>
         <div class="photo-box" id="ph-lieu-2">
-          <img src="images/lieu-2.jpg" alt="Photo du Prieuré de Vivoin" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+          <img src="images/lieu-2.jpg" alt="Photo du Prieuré de Vivoin" onload="this.parentElement.classList.add('has-photo')" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
           <span>images/lieu-2.jpg</span>
         </div>
       </div>
@@ -358,7 +428,7 @@
   </section>
 
   <!-- ================= PROGRAMME ================= -->
-  <section id="programme">
+  <section class="reveal" id="programme">
     <div class="wrap">
       <h2>Programme de la journée</h2>
       <ul class="timeline">
@@ -372,8 +442,35 @@
     </div>
   </section>
 
+  <!-- ================= THÈME / TENUE DES INVITÉS ================= -->
+  <section class="reveal" id="theme">
+    <div class="wrap">
+      <h2>Le thème</h2>
+      <!-- MODIFIER : texte et couleurs une fois choisis -->
+      <p>
+        Pour vous aider à composer votre tenue, voici la palette de
+        couleurs choisie pour la journée. N'hésitez pas à vous en
+        inspirer, sans obligation de s'y tenir à la lettre.
+      </p>
+      <!--
+        MODIFIER : remplacez chaque case par une couleur définie,
+        par exemple :
+        <div class="swatch" style="background: #3f4a3a"></div>
+        Le texte "à venir" et le style pointillé disparaissent
+        automatiquement dès qu'un fond de couleur est appliqué.
+      -->
+      <div class="palette">
+        <div class="swatch"><span>à venir</span></div>
+        <div class="swatch"><span>à venir</span></div>
+        <div class="swatch"><span>à venir</span></div>
+        <div class="swatch"><span>à venir</span></div>
+      </div>
+      <p class="note">Palette définitive à venir.</p>
+    </div>
+  </section>
+
   <!-- ================= CADEAU / LUNE DE MIEL ================= -->
-  <section id="cadeau">
+  <section class="reveal" id="cadeau">
     <div class="wrap">
       <h2>Notre cadeau de mariage</h2>
       <!-- MODIFIER : texte, destination -->
@@ -389,11 +486,11 @@
       </p>
       <div class="photo-grid">
         <div class="photo-box" id="ph-voyage-1">
-          <img src="images/voyage-1.jpg" alt="Photo de voyage" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+          <img src="images/voyage-1.jpg" alt="Photo de voyage" onload="this.parentElement.classList.add('has-photo')" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
           <span>images/voyage-1.jpg</span>
         </div>
         <div class="photo-box" id="ph-voyage-2">
-          <img src="images/voyage-2.jpg" alt="Photo de voyage" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+          <img src="images/voyage-2.jpg" alt="Photo de voyage" onload="this.parentElement.classList.add('has-photo')" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
           <span>images/voyage-2.jpg</span>
         </div>
       </div>
@@ -401,7 +498,7 @@
   </section>
 
   <!-- ================= PHOTOS ================= -->
-  <section id="photos">
+  <section class="reveal" id="photos">
     <div class="wrap">
       <h2>Les photos</h2>
       <p>Retrouvez ici l'album partagé pour déposer et consulter les photos du mariage.</p>
@@ -436,6 +533,18 @@
 
     updateCountdown();
     setInterval(updateCountdown, 1000);
+
+    // Apparition en fondu des sections au défilement
+    var revealEls = document.querySelectorAll('.reveal');
+    var observer = new IntersectionObserver(function(entries) {
+      entries.forEach(function(entry) {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.15 });
+    revealEls.forEach(function(el) { observer.observe(el); });
   </script>
 
 </body>
